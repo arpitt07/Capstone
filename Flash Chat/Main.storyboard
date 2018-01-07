@@ -267,6 +267,9 @@
                                 <state key="normal" title="Start">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="startPressed:" destination="hPX-M6-Xwa" eventType="touchUpInside" id="pKe-m9-2z0"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Physio Bud" textAlignment="center" adjustsFontSizeToFit="NO" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="o8c-sH-EBB">
                                 <rect key="frame" x="108" y="111" width="159" height="34"/>
@@ -287,6 +290,9 @@
                                 <state key="normal" title="Stop">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="stopPressed:" destination="hPX-M6-Xwa" eventType="touchUpInside" id="dDx-87-hcx"/>
+                                </connections>
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ax2-LS-LQp">
                                 <rect key="frame" x="157" y="452" width="60" height="47"/>
@@ -303,6 +309,11 @@
                         <color key="backgroundColor" red="0.15686274510000001" green="0.66666666669999997" blue="0.75294117650000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="tna-xq-rrh"/>
+                    <connections>
+                        <outlet property="StartPressed" destination="NCa-Iw-Zk9" id="AJW-c8-cZe"/>
+                        <outlet property="startPressed" destination="NCa-Iw-Zk9" id="jrS-wT-tDJ"/>
+                        <outlet property="stopPressed" destination="rHm-Zq-3gR" id="hLI-il-hnp"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vgO-2L-0Si" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -424,6 +435,6 @@
         <image name="physiotherapy" width="600" height="600"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="mOy-cb-hAN"/>
+        <segue reference="bEF-ax-h66"/>
     </inferredMetricsTieBreakers>
 </document>

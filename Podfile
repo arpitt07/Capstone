@@ -8,6 +8,7 @@ target 'Flash Chat' do
     pod 'Firebase'
     pod 'Firebase/Auth'
     pod 'Firebase/Database'
+    pod 'SwiftyTimer', '~> 2.0'
     pod 'SVProgressHUD'
     pod 'ChameleonFramework'
 

@@ -3,6 +3,7 @@
 //  Flash Chat
 //
 //  This is the model class that represents the blueprint for a message
+import UIKit
 
 class Message {
     
@@ -12,4 +13,11 @@ class Message {
     var messageBody: String = ""
     
     
+}
+
+class Data {
+    
+    var time : String = ""
+    var field1: String = ""
+    //var field2: String = ""
 }
