@@ -127,7 +127,7 @@
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="registerPressed:" destination="qQg-wA-Esh" eventType="touchUpInside" id="VlE-dg-fmH"/>
+                                            <segue destination="hPX-M6-Xwa" kind="push" id="eGH-Bp-N9t"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -163,7 +163,6 @@
                     <connections>
                         <outlet property="emailTextfield" destination="M1R-HS-xgc" id="EZN-co-Khq"/>
                         <outlet property="passwordTextfield" destination="SYb-Xx-USU" id="pWb-Ds-G8q"/>
-                        <segue destination="vXZ-lx-hvc" kind="push" identifier="goToMain" id="mOy-cb-hAN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zMZ-W7-skD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -201,7 +200,6 @@
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="logInPressed:" destination="xYK-ej-9R9" eventType="touchUpInside" id="Llx-K4-fZc"/>
                                             <segue destination="hPX-M6-Xwa" kind="push" identifier="goToMain" id="uUW-g4-36G"/>
                                         </connections>
                                     </button>
@@ -435,6 +433,7 @@
         <image name="physiotherapy" width="600" height="600"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bEF-ax-h66"/>
+        <segue reference="RuE-fI-2yI"/>
+        <segue reference="eGH-Bp-N9t"/>
     </inferredMetricsTieBreakers>
 </document>
