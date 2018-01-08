@@ -14,6 +14,7 @@ class LogInViewController: UIViewController {
     //Textfields pre-linked with IBOutlets
     @IBOutlet var emailTextfield: UITextField!
     @IBOutlet var passwordTextfield: UITextField!
+    let remember = Database.database().reference().child("Logins")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,14 +40,14 @@ class LogInViewController: UIViewController {
                 print("Log in Successful")
                 
                 SVProgressHUD.dismiss()
-                
+                self.store()
                 self.performSegue(withIdentifier: "goToMain", sender: self)
             }
         }
         
     }
-    
-
-
-    
-}  
+    func store(){
+        let deviceID = UIDevice.current.identifierForVendor!.uuidString
+        remember.setValue(["deviceID":deviceID,"username":emailTextfield.text!,"password":passwordTextfield.text!])
+    }
+}
