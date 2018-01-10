@@ -10,7 +10,7 @@ import Firebase
 import SVProgressHUD
 
 class LogInViewController: UIViewController {
-    var posts:[String] = []
+    var posts:[String:String] = [:]
     var check:String = ""
     var autoLogin: Bool = false
     
@@ -37,7 +37,7 @@ class LogInViewController: UIViewController {
 
         if(autoLogin){
             print(self.posts)
-        Auth.auth().signIn(withEmail: self.posts[1], password: self.posts[0]) { (user, error) in
+            Auth.auth().signIn(withEmail: self.posts["username"]!, password: self.posts["password"]!) { (user, error) in
             
             if error != nil {
                 print(error!)
@@ -76,11 +76,11 @@ class LogInViewController: UIViewController {
         })
         remember.child(deviceID).child("username").observe(.value, with: {snapshot in
             print(snapshot)
-            self.posts.append(snapshot.value as! String)
+            self.posts["username"] = snapshot.value as? String
         })
         remember.child(deviceID).child("password").observe(.value, with: {snapshot in
             print(snapshot)
-            self.posts.append(snapshot.value as! String)
+            self.posts["password"] = snapshot.value as? String
         })
         self.autoLogin = true
     }
@@ -92,10 +92,10 @@ class LogInViewController: UIViewController {
         remember.child(deviceID).child("username").observe(.value, with: {snapshot in
             if(snapshot.exists()){
                 self.autoLogin = true
-                self.posts.append((snapshot.value as? String)!)}})
+                self.posts["username"] = snapshot.value as? String!}})
             
         remember.child(deviceID).child("password").observe(.value, with: {snapshot in
             if(snapshot.exists()){
-                self.posts.append((snapshot.value as? String)!)}})
+                self.posts["password"] = snapshot.value as? String!}})
     }
 }
