@@ -11,6 +11,7 @@ import SVProgressHUD
 
 class LogInViewController: UIViewController {
     var posts:[String] = []
+    var check:String = ""
     var autoLogin: Bool = false
     
         let remember = Database.database().reference().child("Logins")
@@ -89,13 +90,12 @@ class LogInViewController: UIViewController {
         remember.child(deviceID).observe(.value, with: {snapshot in
         })
         remember.child(deviceID).child("username").observe(.value, with: {snapshot in
-            if((snapshot.value as! String) != ""){
+            if(snapshot.exists()){
                 self.autoLogin = true
-                self.posts.append(snapshot.value as! String)}})
+                self.posts.append((snapshot.value as? String)!)}})
             
         remember.child(deviceID).child("password").observe(.value, with: {snapshot in
-            if((snapshot.value as! String) != ""){
-            self.posts.append(snapshot.value as! String)}
-        })
+            if(snapshot.exists()){
+                self.posts.append((snapshot.value as? String)!)}})
     }
 }

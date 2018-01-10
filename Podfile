@@ -11,6 +11,7 @@ target 'Flash Chat' do
     pod 'SwiftyTimer', '~> 2.0'
     pod 'SVProgressHUD'
     pod 'ChameleonFramework'
+    pod ‘BluetoothKit’, ‘~> 0.4’
 
 end
 
