@@ -18,6 +18,6 @@ class Message {
 class Data {
     
     var time : String = ""
-    var field1: String = ""
+    var field1 = [String]()
     //var field2: String = ""
 }

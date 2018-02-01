@@ -17,6 +17,8 @@ class MainScreen: UIViewController {
     var clockTimer : Timer!
     var const = 0
     var arr = ""
+    //var text2 : String = ""
+    var lines  =  [String]()
     var minutes : Int =  0
     var seconds : Int = 0
     var fractions : Int = 0
@@ -70,6 +72,23 @@ class MainScreen: UIViewController {
         
         timer = Timer.scheduledTimer(timeInterval: 10.seconds, target: self, selector: #selector(updateEntry), userInfo: nil, repeats: true)
         
+        let file = "file.txt"
+        
+        if let dir = FileManager.default.urls(for: .documentDirectory , in: .userDomainMask).first {
+            
+            print()
+            let fileURL = dir.appendingPathComponent(file)
+            print(fileURL)
+            
+            do {
+                let text2 = try String(contentsOf: fileURL, encoding: String.Encoding.utf8)
+                lines = text2.components(separatedBy: NSCharacterSet.newlines)
+                
+            }
+            catch {/* error handling here */}
+        }
+        
+        
   
         
     }
@@ -83,7 +102,7 @@ class MainScreen: UIViewController {
         timer.invalidate()
         clockTimer.invalidate()
         
-        let dataDictionary : [String:Any] = ["Time": clocktext , "Field1": arr]
+        let dataDictionary : [String:Any] = ["Time": clocktext , "Field1": lines]
         
         print(arr)
         dataDB.childByAutoId().setValue(dataDictionary) {
@@ -94,6 +113,7 @@ class MainScreen: UIViewController {
             }
             else {
                 print("Message sent")
+                print(self.lines)
                 
             }
         }
