@@ -12,7 +12,7 @@ target 'Flash Chat' do
     pod 'SVProgressHUD'
     pod 'ChameleonFramework'
     pod ‘BluetoothKit’, ‘~> 0.4’
-
+    pod 'SwiftCharts', '~> 0.6.1'
 end
 
 post_install do |installer|
