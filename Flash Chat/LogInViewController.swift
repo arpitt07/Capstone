@@ -82,6 +82,10 @@ class LogInViewController: UIViewController {
             print(snapshot)
             self.posts["password"] = snapshot.value as? String
         })
+        remember.child(deviceID).child("userType").observe(.value, with: {snapshot in
+            print(snapshot)
+            self.posts["userType"] = snapshot.value as? String
+        })
         self.autoLogin = true
     }
     func checkLogin(){
@@ -97,5 +101,8 @@ class LogInViewController: UIViewController {
         remember.child(deviceID).child("password").observe(.value, with: {snapshot in
             if(snapshot.exists()){
                 self.posts["password"] = snapshot.value as? String!}})
+        remember.child(deviceID).child("userType").observe(.value, with: {snapshot in
+            if(snapshot.exists()){
+                self.posts["userType"] = snapshot.value as? String!}})
     }
 }

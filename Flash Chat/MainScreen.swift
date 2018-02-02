@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 import SwiftyTimer
 import BluetoothKit
+import SwiftCharts
 
 class MainScreen: UIViewController {
     
@@ -24,6 +25,7 @@ class MainScreen: UIViewController {
     var seconds : Int = 0
     var fractions : Int = 0
     var clocktext : String = ""
+    var chartView: LineChart!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,7 +76,7 @@ class MainScreen: UIViewController {
         timer = Timer.scheduledTimer(timeInterval: 10.seconds, target: self, selector: #selector(updateEntry), userInfo: nil, repeats: true)
         
         let file = "file.txt"
-        
+
         if let dir = FileManager.default.urls(for: .documentDirectory , in: .userDomainMask).first {
             
             print()
@@ -117,6 +119,30 @@ class MainScreen: UIViewController {
                 print("Message sent")
                 print(self.lines2)
                 
+                //graph
+                var timeCount = 1.0
+                var dataPoints = [(Double,Double)]()
+                
+                for v in self.lines2{
+                    let newdouble = Double(v)
+                    dataPoints.append((timeCount,newdouble!))
+                    //dataPoints.append(newdouble!)
+                    timeCount = timeCount + 1.0
+                }
+                
+                let chartConfig = ChartConfigXY(xAxisConfig: ChartAxisConfig(from:0, to:500, by:50), yAxisConfig: ChartAxisConfig(from:-1, to: 100, by: 15))
+                let frame = CGRect(x:0, y:500, width: self.view.frame.width, height:225)
+                let chart = LineChart(
+                    frame: frame,
+                    chartConfig: chartConfig,
+                    xTitle: "X axis",
+                    yTitle: "Y axis",
+                    lines: [
+                        (chartPoints: (dataPoints), color: UIColor.green)]
+                )
+                self.view.addSubview(chart.view)
+                self.chartView = chart
+
             }
         }
     }

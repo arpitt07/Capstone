@@ -11,6 +11,8 @@ import SVProgressHUD
 
 class RegisterViewController: UIViewController {
 
+    var usr:String = ""
+    var pwd:String = ""
     
     //Pre-linked IBOutlets
 
@@ -38,6 +40,11 @@ class RegisterViewController: UIViewController {
                 print(error!)
             }
             else {
+                
+                let remember = Database.database().reference().child("Logins")
+                self.usr = self.emailTextfield.text!.replacingOccurrences(of: ".", with: ",")
+                remember.child(self.usr).setValue(["password":self.passwordTextfield.text!,"userType":"patient"])
+                
                 print("Registered Successfully")
                 SVProgressHUD.dismiss()
                 self.performSegue(withIdentifier: "goToMain", sender: self)
