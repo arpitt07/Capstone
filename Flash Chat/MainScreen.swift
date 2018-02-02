@@ -19,6 +19,7 @@ class MainScreen: UIViewController {
     var arr = ""
     //var text2 : String = ""
     var lines  =  [String]()
+    var lines2  =  [String]()
     var minutes : Int =  0
     var seconds : Int = 0
     var fractions : Int = 0
@@ -82,12 +83,13 @@ class MainScreen: UIViewController {
             
             do {
                 let text2 = try String(contentsOf: fileURL, encoding: String.Encoding.utf8)
-                lines = text2.components(separatedBy: NSCharacterSet.newlines)
+                lines = text2.components(separatedBy: NSCharacterSet.whitespacesAndNewlines)
                 
             }
             catch {/* error handling here */}
         }
         
+        lines2 = lines.filter({$0 != ""})
         
   
         
@@ -102,7 +104,7 @@ class MainScreen: UIViewController {
         timer.invalidate()
         clockTimer.invalidate()
         
-        let dataDictionary : [String:Any] = ["Time": clocktext , "Field1": lines]
+        let dataDictionary : [String:Any] = ["Time": clocktext , "Field1": lines2]
         
         print(arr)
         dataDB.childByAutoId().setValue(dataDictionary) {
@@ -113,7 +115,7 @@ class MainScreen: UIViewController {
             }
             else {
                 print("Message sent")
-                print(self.lines)
+                print(self.lines2)
                 
             }
         }
