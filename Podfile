@@ -1,4 +1,4 @@
-platform :ios, '9.0'
+platform :ios, ’10.0’
 
 target 'Flash Chat' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
@@ -13,6 +13,7 @@ target 'Flash Chat' do
     pod 'ChameleonFramework'
     pod ‘BluetoothKit’, ‘~> 0.4’
     pod ‘SwiftCharts’, ‘~> 0.6.1’
+    pod 'BlueCapKit', '~> 0.6'
 
 end
 

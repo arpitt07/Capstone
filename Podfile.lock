@@ -1,4 +1,5 @@
 PODS:
+  - BlueCapKit (0.6.0)
   - BluetoothKit (0.4.0)
   - ChameleonFramework (2.1.0):
     - ChameleonFramework/Default (= 2.1.0)
@@ -52,6 +53,7 @@ PODS:
   - SwiftyTimer (2.0.0)
 
 DEPENDENCIES:
+  - BlueCapKit (~> 0.6)
   - BluetoothKit (~> 0.4)
   - ChameleonFramework
   - Firebase
@@ -62,6 +64,7 @@ DEPENDENCIES:
   - SwiftyTimer (~> 2.0)
 
 SPEC CHECKSUMS:
+  BlueCapKit: 8c8c4764a9fcd7296ae2a491533bb8ec53f8f61f
   BluetoothKit: 00e189e01ba765e2689c46fbd8d0ede62984441b
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   Firebase: dbfb98ccec2dcfcd21ab9cc1b4981a3f3c8c5e26
@@ -78,6 +81,6 @@ SPEC CHECKSUMS:
   SwiftCharts: 77378d6cf667e95f9c79a745b6778e66eed5339c
   SwiftyTimer: 2efd74b060d69ad4f1496baf5bbedbe132125fcf
 
-PODFILE CHECKSUM: 17b7a0b5a158f8b98e3aa608a52e30989e0e236a
+PODFILE CHECKSUM: 33938e00defa3826bd17c4a2bc998b1f8e0b8e03
 
 COCOAPODS: 1.3.1
