@@ -285,8 +285,10 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         print(peripherals)
         for i in self.peripherals{
             print("device: " + i.identifier.uuidString)
-            if (i.identifier.uuidString == "BF56594D-2D2E-36F2-AC8B-31B2856F8462"){
+            if ((i.name) == "BT05"){
                 print(i.name as! String)
+                blePeripheral = i
+                connectToDevice()
             }
         }
     }
