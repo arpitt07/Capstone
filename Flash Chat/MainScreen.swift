@@ -92,8 +92,6 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
     //-Connection
     func connectToDevice () {
         centralManager?.connect(blePeripheral!, options: nil)
-        //centralManager?.connect(CBUUID(string: "BF56594D-2D2E-36F2-AC8B-31B2856F8462"), options: nil)
-        //centralManager?.connect(CBPeripheral)
     }
     
     /*
@@ -116,7 +114,8 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         //Discovery callback
         peripheral.delegate = self
         //Only look for services that matches transmit uuid
-        peripheral.discoverServices([BLEService_UUID])
+        //peripheral.discoverServices([BLEService_UUID])
+        peripheral.discoverServices([CBUUID(string:"FFE0")])
     }
     
     /*
@@ -181,7 +180,8 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         for characteristic in characteristics {
             //looks for the right characteristic
             
-            if characteristic.uuid.isEqual(BLE_Characteristic_uuid_Rx)  {
+            //if characteristic.uuid.isEqual(BLE_Characteristic_uuid_Rx)  {
+            if characteristic.uuid.isEqual(CBUUID(string:"FFE1")) {
                 rxCharacteristic = characteristic
                 
                 //Once found, subscribe to the this particular characteristic...
@@ -191,7 +191,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
                 peripheral.readValue(for: characteristic)
                 print("Rx Characteristic: \(characteristic.uuid)")
             }
-            if characteristic.uuid.isEqual(BLE_Characteristic_uuid_Tx){
+            if characteristic.uuid.isEqual(CBUUID(string:"FFE1")){
                 txCharacteristic = characteristic
                 print("Tx Characteristic: \(characteristic.uuid)")
             }
