@@ -270,11 +270,22 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         print("Succeeded!")
     }
     func startScan() {
+        let alert = UIAlertController(title: nil, message: "Connecting to Bluetooth", preferredStyle: .alert)
+        
+        let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        loadingIndicator.startAnimating();
+        
+        alert.view.addSubview(loadingIndicator)
+        
+        
         peripherals = []
         print("Now Scanning...")
         self.timer2.invalidate()
         //centralManager?.scanForPeripherals(withServices: [BLEService_UUID] , options: [CBCentralManagerScanOptionAllowDuplicatesKey:false])
         centralManager?.scanForPeripherals(withServices: [] , options: nil)
+        present(alert, animated: true, completion: nil)
         Timer.scheduledTimer(timeInterval: 17, target: self, selector: #selector(self.cancelScan), userInfo: nil, repeats: false)
     }
     
@@ -282,15 +293,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         self.centralManager?.stopScan()
         print("Scan Stopped")
         print("Number of Peripherals Found: \(peripherals.count)")
-        print(peripherals)
-        for i in self.peripherals{
-            print("device: " + i.identifier.uuidString)
-            if ((i.name) == "BT05"){
-                print(i.name as! String)
-                blePeripheral = i
-                connectToDevice()
-            }
-        }
+        dismiss(animated: false, completion: nil)
     }
     
     @IBOutlet weak var clock: UILabel!
@@ -320,6 +323,15 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         }
         
         lines2 = lines.filter({$0 != ""})
+        print(peripherals)
+        for i in self.peripherals{
+            print("device: " + i.identifier.uuidString)
+            if ((i.name) == "BT05"){
+                print(i.name as! String)
+                blePeripheral = i
+                connectToDevice()
+            }
+        }
     }
     
     @IBAction func stopPressed(_ sender: AnyObject) {

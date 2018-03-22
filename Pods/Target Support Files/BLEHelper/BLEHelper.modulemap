@@ -1,0 +1,6 @@
+framework module BLEHelper {
+  umbrella header "BLEHelper-umbrella.h"
+
+  export *
+  module * { export * }
+}
