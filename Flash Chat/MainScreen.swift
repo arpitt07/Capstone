@@ -23,6 +23,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
     var peripherals: [CBPeripheral] = []
     var characteristicValue = [CBUUID: NSData]()
     var timer2 = Timer()
+    var timercheck = Timer()
     var characteristics = [String : CBCharacteristic]()
     
     var counter : String = ""
@@ -42,6 +43,10 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
     var rxCharacteristic : CBCharacteristic?
     var blePeripheral : CBPeripheral?
     var characteristicASCIIValue = NSString()
+    var livedata : String = "0"
+    var temp : String = "0"
+    var graphplot = [(Double,Double)]()
+    var timeCount = 1.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -209,6 +214,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
             if let ASCIIstring = NSString(data: characteristic.value!, encoding: String.Encoding.utf8.rawValue) {
                 characteristicASCIIValue = ASCIIstring
                 print("Value Recieved: \((characteristicASCIIValue as String))")
+                livedata = characteristicASCIIValue as String
                 NotificationCenter.default.post(name:NSNotification.Name(rawValue: "Notify"), object: nil)
                 
             }
@@ -279,7 +285,6 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         
         alert.view.addSubview(loadingIndicator)
         
-        
         peripherals = []
         print("Now Scanning...")
         self.timer2.invalidate()
@@ -306,23 +311,24 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         clockTimer = Timer.scheduledTimer(timeInterval: 0.01.seconds, target: self, selector: #selector(updateClock), userInfo: nil, repeats: true)
         
         timer = Timer.scheduledTimer(timeInterval: 10.seconds, target: self, selector: #selector(updateEntry), userInfo: nil, repeats: true)
+        timercheck = Timer.scheduledTimer(timeInterval: 1.seconds, target: self, selector: #selector(plot), userInfo: nil, repeats: true)
         
-        let file = "file.txt"
-
-        if let dir = FileManager.default.urls(for: .documentDirectory , in: .userDomainMask).first {
-            
-            print()
-            let fileURL = dir.appendingPathComponent(file)
-            print(fileURL)
-            
-            do {
-                let text2 = try String(contentsOf: fileURL, encoding: String.Encoding.utf8)
-                lines = text2.components(separatedBy: NSCharacterSet.whitespacesAndNewlines)
-            }
-            catch {/* error handling here */}
-        }
-        
-        lines2 = lines.filter({$0 != ""})
+//        let file = "file.txt"
+//
+//        if let dir = FileManager.default.urls(for: .documentDirectory , in: .userDomainMask).first {
+//
+//            print()
+//            let fileURL = dir.appendingPathComponent(file)
+//            print(fileURL)
+//
+//            do {
+//                let text2 = try String(contentsOf: fileURL, encoding: String.Encoding.utf8)
+//                lines = text2.components(separatedBy: NSCharacterSet.whitespacesAndNewlines)
+//            }
+//            catch {/* error handling here */}
+//        }
+//
+//        lines2 = lines.filter({$0 != ""})
         print(peripherals)
         for i in self.peripherals{
             print("device: " + i.identifier.uuidString)
@@ -335,7 +341,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
     }
     
     @IBAction func stopPressed(_ sender: AnyObject) {
-        
+        disconnectAllConnection()
         let dataDB = Database.database().reference().child("Data")
         const = 1
     
@@ -351,23 +357,22 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
             if error != nil {
                 print(error!)
             }
-            else {
-                print("Message sent")
-                print(self.lines2)
-                
-                //graph
-                var timeCount = 1.0
-                var overlay = [(Double,Double)]()
-                
-                for v in self.lines2{
-                    let newdouble = Double(v)
-                    overlay.append((timeCount,newdouble!))
-                    //dataPoints.append(newdouble!)
-                    timeCount = timeCount + 1.0
-                }
-                self.graphoverlay(overlay: overlay)
-            }
+            //else {
+            //}
         }
+        print("Message sent")
+        print(self.lines2)
+        
+        //graph
+        //var timeCount = 1.0
+        
+//        for v in self.lines2{
+//            let newdouble = Double(v)
+//            overlay.append((timeCount,newdouble!))
+//            //dataPoints.append(newdouble!)
+//            timeCount = timeCount + 1.0
+//        }
+        //self.graphoverlay(overlay: overlay)
     }
     
     override func didReceiveMemoryWarning() {
@@ -396,10 +401,17 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         clocktext = "\(minutesString):\(secondsString):\(fractionString)"
         clock.text = clocktext
     }
-    
+    @objc func plot(){
+            if(temp != livedata){
+                graphplot.append((timeCount,(livedata as NSString).doubleValue))
+                temp = livedata
+                self.graphoverlay(overlay: graphplot)
+            }
+            timeCount = timeCount + 1.0
+    }
     func graphoverlay(overlay: [(Double,Double)]) -> Void {
-        let chartConfig = ChartConfigXY(xAxisConfig: ChartAxisConfig(from:0, to:500, by:50), yAxisConfig: ChartAxisConfig(from:-1, to: 100, by: 15))
-        let frame = CGRect(x:0, y:500, width: self.view.frame.width, height:225)
+        let chartConfig = ChartConfigXY(xAxisConfig: ChartAxisConfig(from:0, to:550, by:150), yAxisConfig: ChartAxisConfig(from:0, to: 100, by: 25))
+        let frame = CGRect(x:0, y:500, width: self.view.frame.width, height:200)
         let chart = LineChart(
             frame: frame,
             chartConfig: chartConfig,
