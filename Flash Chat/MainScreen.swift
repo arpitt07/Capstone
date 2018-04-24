@@ -419,14 +419,14 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
             timeCount = timeCount + 1.0
     }
     func graphoverlay(overlay: [(Double,Double)]) -> Void {
-        let chartConfig = ChartConfigXY(xAxisConfig: ChartAxisConfig(from:0, to:550, by:150), yAxisConfig: ChartAxisConfig(from:0, to: 100, by: 25))
-        let frame = CGRect(x:0, y:500, width: self.view.frame.width, height:200)
+        let chartConfig = ChartConfigXY(xAxisConfig: ChartAxisConfig(from:0, to:600, by:50), yAxisConfig: ChartAxisConfig(from:0, to: 100, by: 15))
+        let frame = CGRect(x:0, y:400, width: self.view.frame.width, height:300)
         let chart = LineChart(
             frame: frame,
             chartConfig: chartConfig,
-            xTitle: "X axis",
-            yTitle: "Y axis",
-            lines: [(chartPoints: (overlay), color: UIColor.green)]
+            xTitle: "Time (0.1 sec)",
+            yTitle: "Angle (degree)",
+            lines: [(chartPoints: (overlay), color: UIColor.black)]
         )
         self.view.addSubview(chart.view)
         self.chartView = chart
