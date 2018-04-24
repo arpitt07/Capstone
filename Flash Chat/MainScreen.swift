@@ -221,12 +221,12 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
                 let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
                 loadingIndicator.hidesWhenStopped = true
                 loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-                if (characteristicASCIIValue as String) > "80" {
-                    loadingIndicator.startAnimating();
-                    newalert.view.addSubview(loadingIndicator)
-                    present(newalert, animated: true, completion: nil)
-                }
-                dismiss(animated: false, completion: nil)
+               // if (characteristicASCIIValue as String) > "70" {
+               //     loadingIndicator.startAnimating();
+               //     newalert.view.addSubview(loadingIndicator)
+               //     present(newalert, animated: true, completion: nil)
+               // }
+              //  dismiss(animated: false, completion: nil)
             }
         }
     }
@@ -321,7 +321,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         clockTimer = Timer.scheduledTimer(timeInterval: 0.01.seconds, target: self, selector: #selector(updateClock), userInfo: nil, repeats: true)
         
         timer = Timer.scheduledTimer(timeInterval: 10.seconds, target: self, selector: #selector(updateEntry), userInfo: nil, repeats: true)
-        timercheck = Timer.scheduledTimer(timeInterval: 1.seconds, target: self, selector: #selector(plot), userInfo: nil, repeats: true)
+        timercheck = Timer.scheduledTimer(timeInterval: 0.5.seconds, target: self, selector: #selector(plot), userInfo: nil, repeats: true)
         
 //        let file = "file.txt"
 //
