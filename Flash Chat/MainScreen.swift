@@ -288,7 +288,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         print("Succeeded!")
     }
     func startScan() {
-        let alert = UIAlertController(title: nil, message: "Connecting to Bluetooth", preferredStyle: .alert)
+        let alert = UIAlertController(title: nil, message: "         Connecting to Bluetooth", preferredStyle: .alert)
         
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
         loadingIndicator.hidesWhenStopped = true
@@ -354,14 +354,18 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
     
     @IBAction func stopPressed(_ sender: AnyObject) {
         disconnectAllConnection()
-        let dataDB = Database.database().reference().child("Data")
+        let dataDB = Database.database().reference().child("Bob Smith").child("Patients").child("John Doe").child("Tests").child("25-04-18").child("Exercises").child("Heel Slides")
+        
+        let dataDB1 = Database.database().reference().child("Bob Smith").child("Patients").child("John Doe").child("Tests").child("25-04-18").child("Exercises").child("Heel Slides").child("Warnings")
         const = 1
-    
+        
         timer.invalidate()
         clockTimer.invalidate()
         timercheck.invalidate()
         
         let dataDictionary : [String:Any] = ["Time": clocktext , "Field1": lines2]
+        
+        let warning = warnings
         
         print(arr)
         dataDB.childByAutoId().setValue(dataDictionary) {
@@ -370,6 +374,17 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
             if error != nil {
                 print(error!)
             }
+            //else {
+            //}
+        }
+        dataDB1.setValue(warning) {
+            (error, reference) in
+            
+            if error != nil {
+                print(error!)
+            }
+            //else {
+            //}
         }
     }
     
