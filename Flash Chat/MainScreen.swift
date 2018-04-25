@@ -47,6 +47,8 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
     var temp : String = "0"
     var graphplot = [(Double,Double)]()
     var timeCount = 1.0
+    var warnings = 0
+    var max_angle = 80
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -368,20 +370,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
             if error != nil {
                 print(error!)
             }
-            //else {
-            //}
         }
-        
-        //graph
-        //var timeCount = 1.0
-        
-//        for v in self.lines2{
-//            let newdouble = Double(v)
-//            overlay.append((timeCount,newdouble!))
-//            //dataPoints.append(newdouble!)
-//            timeCount = timeCount + 1.0
-//        }
-        //self.graphoverlay(overlay: overlay)
     }
     
     override func didReceiveMemoryWarning() {
@@ -415,6 +404,9 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
                 graphplot.append((timeCount,(livedata as NSString).doubleValue))
                 temp = livedata
                 self.graphoverlay(overlay: graphplot)
+                if(livedata > max_angle){
+                    warnings += 1
+                }
             }
             timeCount = timeCount + 1.0
     }
