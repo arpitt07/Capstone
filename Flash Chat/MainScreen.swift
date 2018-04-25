@@ -47,8 +47,8 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
     var temp : String = "0"
     var graphplot = [(Double,Double)]()
     var timeCount = 1.0
-    var warnings = 0
-    var max_angle = 80
+    var warnings : Int = 0
+    var max_angle : Double = 80
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -404,7 +404,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
                 graphplot.append((timeCount,(livedata as NSString).doubleValue))
                 temp = livedata
                 self.graphoverlay(overlay: graphplot)
-                if(livedata > max_angle){
+                if((livedata as NSString).doubleValue > max_angle){
                     warnings += 1
                 }
             }
