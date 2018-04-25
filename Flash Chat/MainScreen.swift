@@ -386,6 +386,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
             //else {
             //}
         }
+        graphplot.removeAll(keepingCapacity: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -426,7 +427,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
             timeCount = timeCount + 1.0
     }
     func graphoverlay(overlay: [(Double,Double)]) -> Void {
-        let chartConfig = ChartConfigXY(xAxisConfig: ChartAxisConfig(from:0, to:650, by:100), yAxisConfig: ChartAxisConfig(from:0, to: 110, by: 15))
+        let chartConfig = ChartConfigXY(xAxisConfig: ChartAxisConfig(from:0, to:650, by:100), yAxisConfig: ChartAxisConfig(from:0, to: 195, by: 15))
         let frame = CGRect(x:0, y:325, width: /*self.view.frame.width*/350, height:325)
         let chart = LineChart(
             frame: frame,
