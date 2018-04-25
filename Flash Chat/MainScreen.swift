@@ -321,7 +321,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         clockTimer = Timer.scheduledTimer(timeInterval: 0.01.seconds, target: self, selector: #selector(updateClock), userInfo: nil, repeats: true)
         
         timer = Timer.scheduledTimer(timeInterval: 10.seconds, target: self, selector: #selector(updateEntry), userInfo: nil, repeats: true)
-        timercheck = Timer.scheduledTimer(timeInterval: 0.5.seconds, target: self, selector: #selector(plot), userInfo: nil, repeats: true)
+        timercheck = Timer.scheduledTimer(timeInterval: 0.1.seconds, target: self, selector: #selector(plot), userInfo: nil, repeats: true)
         
 //        let file = "file.txt"
 //
@@ -419,8 +419,8 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
             timeCount = timeCount + 1.0
     }
     func graphoverlay(overlay: [(Double,Double)]) -> Void {
-        let chartConfig = ChartConfigXY(xAxisConfig: ChartAxisConfig(from:0, to:600, by:50), yAxisConfig: ChartAxisConfig(from:0, to: 100, by: 15))
-        let frame = CGRect(x:0, y:400, width: self.view.frame.width, height:300)
+        let chartConfig = ChartConfigXY(xAxisConfig: ChartAxisConfig(from:0, to:650, by:100), yAxisConfig: ChartAxisConfig(from:0, to: 110, by: 15))
+        let frame = CGRect(x:0, y:325, width: /*self.view.frame.width*/350, height:325)
         let chart = LineChart(
             frame: frame,
             chartConfig: chartConfig,
