@@ -36,25 +36,25 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
     var minutes : Int =  0
     var seconds : Int = 0
     var fractions : Int = 0
-    var clocktext : String = ""
+    var clockText : String = ""
     var chartView: LineChart!
 
     var txCharacteristic : CBCharacteristic?
     var rxCharacteristic : CBCharacteristic?
     var blePeripheral : CBPeripheral?
     var characteristicASCIIValue = NSString()
-    var livedata : String = "0"
+    var liveData : String = "0"
     var temp : String = "0"
-    var graphplot = [(Double,Double)]()
-    var dbsave = [NSString]()
+    var graphPlot = [(Double,Double)]()
+    var DBSave = [NSString]()
     var timeCount = 1.0
     var warnings : Int = 0
-    var max_angle : Double = 80
+    var maxAngle : Double = 80
     
     let chartConfig = ChartConfigXY(xAxisConfig: ChartAxisConfig(from:0, to:650, by:100), yAxisConfig: ChartAxisConfig(from:0, to: 195, by: 15))
     let frame = CGRect(x:0, y:325, width: /*self.view.frame.width*/350, height:325)
     var chart: LineChart!
-    var graph_clear : Int = -5
+    var graphClear : Int = -5
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -222,7 +222,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
             if let ASCIIstring = NSString(data: characteristic.value!, encoding: String.Encoding.utf8.rawValue) {
                 characteristicASCIIValue = ASCIIstring
                 print("Value Recieved: \((characteristicASCIIValue as String))")
-                livedata = characteristicASCIIValue as String
+                liveData = characteristicASCIIValue as String
                 NotificationCenter.default.post(name:NSNotification.Name(rawValue: "Notify"), object: nil)
             }
         }
@@ -362,7 +362,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         clockTimer.invalidate()
         timercheck.invalidate()
         
-        let dataDictionary : [String:Any] = ["Time": clocktext , "Field1": dbsave.filter({$0 != ""})]
+        let dataDictionary : [String:Any] = ["Time": clockText , "Field1": DBSave.filter({$0 != ""})]
         let warning = warnings
         
         print(arr)
@@ -380,9 +380,10 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
                 print(error!)
             }
         }
-        graphplot.removeAll(keepingCapacity: true)
+        graphPlot.removeAll(keepingCapacity: true)
+        DBSave.removeAll(keepingCapacity: true)
         timeCount = 0.0
-        graph_clear = -7
+        graphClear = -7
         
         var count : Int = 6
         for sub in self.view.subviews{
@@ -416,32 +417,32 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         let secondsString = seconds > 9 ? "\(seconds)" : "0\(seconds)"
         let minutesString = minutes > 9 ? "\(minutes)" : "0\(minutes)"
         
-        clocktext = "\(minutesString):\(secondsString):\(fractionString)"
-        clock.text = clocktext
+        clockText = "\(minutesString):\(secondsString):\(fractionString)"
+        clock.text = clockText
     }
     @objc func plot(){
-        graphplot.append((timeCount,(livedata as NSString).doubleValue))
-        dbsave.append((livedata as NSString))
-        temp = livedata
+        graphPlot.append((timeCount,(liveData as NSString).doubleValue))
+        DBSave.append((liveData as NSString))
+        temp = liveData
         let newalert = UIAlertController(title: nil, message: "Warning", preferredStyle: .alert)
         
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-         if (livedata as NSString).intValue > 90 {
+         if (liveData as NSString).intValue > 90 {
              loadingIndicator.startAnimating();
              newalert.view.addSubview(loadingIndicator)
              present(newalert, animated: true, completion: nil)
          }
         dismiss(animated: false, completion: nil)
-        self.graphoverlay(overlay: graphplot)
-        if((livedata as NSString).doubleValue > max_angle){
+        self.graphOverlay(overlay: graphPlot)
+        if((liveData as NSString).doubleValue > maxAngle){
             warnings += 1
         }
         timeCount = timeCount + 1.0
-        graph_clear = graph_clear + 1
+        graphClear = graphClear + 1
         
-        if (graph_clear > 10){
+        if (graphClear > 10){
             var count : Int = 6
             for sub in self.view.subviews{
                 if (count <= 0){
@@ -452,10 +453,10 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
                 }
                 count = count - 1
             }
-            graph_clear = 0
+            graphClear = 0
         }
     }
-    func graphoverlay(overlay: [(Double,Double)]) -> Void {
+    func graphOverlay(overlay: [(Double,Double)]) -> Void {
         self.chart = LineChart(
             frame: self.frame,
             chartConfig: self.chartConfig,
