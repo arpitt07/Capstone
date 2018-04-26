@@ -46,9 +46,14 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
     var livedata : String = "0"
     var temp : String = "0"
     var graphplot = [(Double,Double)]()
+    var dbsave = [NSString]()
     var timeCount = 1.0
     var warnings : Int = 0
     var max_angle : Double = 80
+    
+    let chartConfig = ChartConfigXY(xAxisConfig: ChartAxisConfig(from:0, to:650, by:100), yAxisConfig: ChartAxisConfig(from:0, to: 195, by: 15))
+    let frame = CGRect(x:0, y:325, width: /*self.view.frame.width*/350, height:325)
+    var chart: LineChart!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -323,7 +328,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         clockTimer = Timer.scheduledTimer(timeInterval: 0.01.seconds, target: self, selector: #selector(updateClock), userInfo: nil, repeats: true)
         
         timer = Timer.scheduledTimer(timeInterval: 10.seconds, target: self, selector: #selector(updateEntry), userInfo: nil, repeats: true)
-        timercheck = Timer.scheduledTimer(timeInterval: 0.1.seconds, target: self, selector: #selector(plot), userInfo: nil, repeats: true)
+        timercheck = Timer.scheduledTimer(timeInterval: 0.5.seconds, target: self, selector: #selector(plot), userInfo: nil, repeats: true)
         
 //        let file = "file.txt"
 //
@@ -363,8 +368,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         clockTimer.invalidate()
         timercheck.invalidate()
         
-        let dataDictionary : [String:Any] = ["Time": clocktext , "Field1": lines2]
-        
+        let dataDictionary : [String:Any] = ["Time": clocktext , "Field1": dbsave.filter({$0 != ""})]
         let warning = warnings
         
         print(arr)
@@ -374,8 +378,6 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
             if error != nil {
                 print(error!)
             }
-            //else {
-            //}
         }
         dataDB1.setValue(warning) {
             (error, reference) in
@@ -383,8 +385,6 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
             if error != nil {
                 print(error!)
             }
-            //else {
-            //}
         }
         graphplot.removeAll(keepingCapacity: true)
     }
@@ -418,6 +418,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
     @objc func plot(){
             if(temp != livedata){
                 graphplot.append((timeCount,(livedata as NSString).doubleValue))
+                dbsave.append((livedata as NSString))
                 temp = livedata
                 self.graphoverlay(overlay: graphplot)
                 if((livedata as NSString).doubleValue > max_angle){
@@ -427,12 +428,10 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
             timeCount = timeCount + 1.0
     }
     func graphoverlay(overlay: [(Double,Double)]) -> Void {
-        let chartConfig = ChartConfigXY(xAxisConfig: ChartAxisConfig(from:0, to:650, by:100), yAxisConfig: ChartAxisConfig(from:0, to: 195, by: 15))
-        let frame = CGRect(x:0, y:325, width: /*self.view.frame.width*/350, height:325)
-        let chart = LineChart(
-            frame: frame,
-            chartConfig: chartConfig,
-            xTitle: "Time (0.1 sec)",
+        self.chart = LineChart(
+            frame: self.frame,
+            chartConfig: self.chartConfig,
+            xTitle: "Time (0.5 sec)",
             yTitle: "Angle (degree)",
             lines: [(chartPoints: (overlay), color: UIColor.black)]
         )
