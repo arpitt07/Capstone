@@ -224,17 +224,6 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
                 print("Value Recieved: \((characteristicASCIIValue as String))")
                 livedata = characteristicASCIIValue as String
                 NotificationCenter.default.post(name:NSNotification.Name(rawValue: "Notify"), object: nil)
-                let newalert = UIAlertController(title: nil, message: "Warning", preferredStyle: .alert)
-                
-                let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
-                loadingIndicator.hidesWhenStopped = true
-                loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-               // if (characteristicASCIIValue as String) > "70" {
-               //     loadingIndicator.startAnimating();
-               //     newalert.view.addSubview(loadingIndicator)
-               //     present(newalert, animated: true, completion: nil)
-               // }
-              //  dismiss(animated: false, completion: nil)
             }
         }
     }
@@ -434,6 +423,17 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         graphplot.append((timeCount,(livedata as NSString).doubleValue))
         dbsave.append((livedata as NSString))
         temp = livedata
+        let newalert = UIAlertController(title: nil, message: "Warning", preferredStyle: .alert)
+        
+        let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+         if (livedata as NSString).intValue > 90 {
+             loadingIndicator.startAnimating();
+             newalert.view.addSubview(loadingIndicator)
+             present(newalert, animated: true, completion: nil)
+         }
+        dismiss(animated: false, completion: nil)
         self.graphoverlay(overlay: graphplot)
         if((livedata as NSString).doubleValue > max_angle){
             warnings += 1
