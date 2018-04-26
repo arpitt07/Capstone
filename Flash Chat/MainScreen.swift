@@ -54,6 +54,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
     let chartConfig = ChartConfigXY(xAxisConfig: ChartAxisConfig(from:0, to:650, by:100), yAxisConfig: ChartAxisConfig(from:0, to: 195, by: 15))
     let frame = CGRect(x:0, y:325, width: /*self.view.frame.width*/350, height:325)
     var chart: LineChart!
+    var graph_clear : Int = -5
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -325,10 +326,10 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
     
     @IBAction func startPressed(_ sender: AnyObject) {
         
-        clockTimer = Timer.scheduledTimer(timeInterval: 0.01.seconds, target: self, selector: #selector(updateClock), userInfo: nil, repeats: true)
+        clockTimer = Timer.scheduledTimer(timeInterval: 0.1.seconds, target: self, selector: #selector(updateClock), userInfo: nil, repeats: true)
         
         timer = Timer.scheduledTimer(timeInterval: 10.seconds, target: self, selector: #selector(updateEntry), userInfo: nil, repeats: true)
-        timercheck = Timer.scheduledTimer(timeInterval: 0.5.seconds, target: self, selector: #selector(plot), userInfo: nil, repeats: true)
+        timercheck = Timer.scheduledTimer(timeInterval: 0.1.seconds, target: self, selector: #selector(plot), userInfo: nil, repeats: true)
         
 //        let file = "file.txt"
 //
@@ -364,6 +365,10 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         let dataDB1 = Database.database().reference().child("Bob Smith").child("Patients").child("John Doe").child("Tests").child("25-04-18").child("Exercises").child("Heel Slides").child("Warnings")
         const = 1
         
+        fractions = -1
+        seconds = 0
+        minutes = 0
+        updateClock()
         timer.invalidate()
         clockTimer.invalidate()
         timercheck.invalidate()
@@ -387,6 +392,16 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
             }
         }
         graphplot.removeAll(keepingCapacity: true)
+        timeCount = 0.0
+        graph_clear = -7
+        
+        var count : Int = 6
+        for sub in self.view.subviews{
+            if (count <= 0){
+                sub.removeFromSuperview()
+            }
+            count = count - 1
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -396,7 +411,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
     @objc func updateClock () {
         
         fractions += 1
-        if fractions == 100 {
+        if fractions == 10 {
             
             seconds += 1
             fractions = 0
@@ -408,7 +423,7 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
             seconds = 0
         }
         
-        let fractionString = fractions > 9 ? "\(fractions)" : "0\(fractions)"
+        let fractionString = "\(fractions)"
         let secondsString = seconds > 9 ? "\(seconds)" : "0\(seconds)"
         let minutesString = minutes > 9 ? "\(minutes)" : "0\(minutes)"
         
@@ -416,22 +431,35 @@ class MainScreen: UIViewController, CBCentralManagerDelegate, CBPeripheralDelega
         clock.text = clocktext
     }
     @objc func plot(){
-            if(temp != livedata){
-                graphplot.append((timeCount,(livedata as NSString).doubleValue))
-                dbsave.append((livedata as NSString))
-                temp = livedata
-                self.graphoverlay(overlay: graphplot)
-                if((livedata as NSString).doubleValue > max_angle){
-                    warnings += 1
+        graphplot.append((timeCount,(livedata as NSString).doubleValue))
+        dbsave.append((livedata as NSString))
+        temp = livedata
+        self.graphoverlay(overlay: graphplot)
+        if((livedata as NSString).doubleValue > max_angle){
+            warnings += 1
+        }
+        timeCount = timeCount + 1.0
+        graph_clear = graph_clear + 1
+        
+        if (graph_clear > 10){
+            var count : Int = 6
+            for sub in self.view.subviews{
+                if (count <= 0){
+                    sub.removeFromSuperview()
+                    if (count == -10){
+                        break
+                    }
                 }
+                count = count - 1
             }
-            timeCount = timeCount + 1.0
+            graph_clear = 0
+        }
     }
     func graphoverlay(overlay: [(Double,Double)]) -> Void {
         self.chart = LineChart(
             frame: self.frame,
             chartConfig: self.chartConfig,
-            xTitle: "Time (0.5 sec)",
+            xTitle: "Time (0.1 sec)",
             yTitle: "Angle (degree)",
             lines: [(chartPoints: (overlay), color: UIColor.black)]
         )
